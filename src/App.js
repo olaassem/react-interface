@@ -5,25 +5,27 @@ import ApptInfo from './components/ApptInfo';
 import Search from './components/Search';
 
 function App() {
-  const [appts, setAppts] = useState([]);
-  const [query, setQuery] = useState("");
-  const [sortBy, setSortBy] = useState("petName")
-  let [orderBy, setOrderBy] = useState("asc")
+  let [appts, setAppts] = useState([]);
+  let [query, setQuery] = useState("");
+  let [sortBy, setSortBy] = useState("petName")
+  let [orderBy, setOrderBy] = useState("desc")
   
   
-  const filteredAppts = appts.filter(item => {
+   const filteredAppts = appts.filter(
+    item => {
+      return (
+        item.petName.toLowerCase().includes(query.toLowerCase()) ||
+        item.ownerName.toLowerCase().includes(query.toLowerCase()) ||
+        item.aptNotes.toLowerCase().includes(query.toLowerCase())
+      )
+    }
+  ).sort((a, b) => {
+    let order = (orderBy === 'asc') ? 1 : -1;
     return (
-      item.petName.toLowerCase().includes(query.toLowerCase()) ||
-      item.ownerName.toLowerCase().includes(query.toLowerCase()) ||
-      item.aptNotes.toLowerCase().includes(query.toLowerCase())
+      a[sortBy].toLowerCase() < b[sortBy].toLowerCase()
+        ? -1 * order : 1 * order
     )
-  }).sort((a, b) => {
-    let order = (orderBy = "asc") ? 1 : -1;
-    return (
-      a[sortBy].toLowerCase() < b[sortBy].toLowerCase() 
-        ? -1 * order : 1 * order 
-    )
-  });
+  })
 
   const fetchData = useCallback(() => {
     fetch(`./data.json`)
@@ -45,12 +47,12 @@ function App() {
       </h1>
       <AddAppt />
       <Search 
-        query={query} 
-        onQueryChange={newQuery => setQuery(newQuery)}
+        query={query}
+        onQueryChange={myQuery => setQuery(myQuery)}
         orderBy={orderBy}
-        onOrderByChange={mySort => setOrderBy(mySort)}
+        onOrderByChange={orderBy => setOrderBy(orderBy)}
         sortBy={sortBy}
-        onSortByChange={myOrder => setOrderBy(myOrder)}
+        onSortByChange={mySort => setSortBy(mySort)}
       />
 
       <ul className="divide-y divide-gray-200">
