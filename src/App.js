@@ -1,10 +1,24 @@
+import { useState, useEffect, useCallback } from 'react';
 import { BiCalendar } from 'react-icons/bi';
 import AddAppt from './components/AddAppt';
 import ApptInfo from './components/ApptInfo';
 import Search from './components/Search';
-import data from './data.json'
 
 function App() {
+  const [appts, setAppts] = useState([]);
+
+  const fetchData = useCallback(() => {
+    fetch(`./data.json`)
+      .then(response => response.json())
+      .then(data => {
+        setAppts(data)
+      })
+  }, [])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData]);
+
   return (
     <div className="App container mx-auto mt-3 font-thin">
       <h1 className="text-5xl mb-8">
@@ -15,7 +29,7 @@ function App() {
       <Search />
 
       <ul className="divide-y divide-gray-200">
-        {data.map( appt => <ApptInfo key={appt.id} appt={appt} /> )}
+        {appts.map( appt => <ApptInfo key={appt.id} appt={appt} /> )}
       </ul>
     </div>
   );
