@@ -29,7 +29,14 @@ function App() {
       <Search />
 
       <ul className="divide-y divide-gray-200">
-        {appts.map( appt => <ApptInfo key={appt.id} appt={appt} /> )}
+        {appts.map( appt => (
+          <ApptInfo 
+            key={appt.id} 
+            appt={appt}
+            onDeleteAppt={ apptId => setAppts(appts.filter(appt => appt.id !== apptId))}
+          /> 
+        )
+        )}
       </ul>
     </div>
   );

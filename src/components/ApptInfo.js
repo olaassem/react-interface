@@ -1,12 +1,15 @@
 import React from 'react';
 import { BiTrash } from 'react-icons/bi';
 
-const ApptInfo = ({appt}) => {
+const ApptInfo = ({appt, onDeleteAppt}) => {
   return (
     <li key={appt.id} className="px-3 py-3 flex items-start">
-      <button type="button"
+      <button
+        onClick={() => onDeleteAppt(appt.id)} 
+        type="button"
         className="p-1.5 mr-1.5 mt-1 rounded text-white bg-red-500 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-        <BiTrash /></button>
+        <BiTrash />
+      </button>
       <div className="flex-grow">
         <div className="flex items-center">
           <span className="flex-none font-medium text-2xl text-blue-500">{appt.petName}</span>
